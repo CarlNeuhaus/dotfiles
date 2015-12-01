@@ -96,3 +96,9 @@ esac
 
 # start z.sh
 . ~/.z.sh
+
+# fixed perl locales issue on vagrant
+if [ `hostname` '==' 'vagrant-ubuntu-trusty-64' ]; then
+  export LC_ALL="en_US.UTF-8"
+fi
+
