@@ -103,6 +103,6 @@ if [ `hostname` '==' 'vagrant-ubuntu-trusty-64' ]; then
 fi
 
 # check if ctf-tools is installed and add the installer to path
-if [ -d "$HOME/installers/ctf-tools" ]; then
+if [ -d "$HOME/tools/installers/ctf-tools" ]; then
   export PATH=$PATH:$HOME/installers/ctf-tools/bin
 fi

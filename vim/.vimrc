@@ -28,6 +28,9 @@ Plugin 'scrooloose/nerdcommenter'
 " git gutter
 Plugin 'airblade/vim-gitgutter'
 
+" pep 8
+Plugin 'nvie/vim-flake8'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -512,3 +515,6 @@ let g:airline#extensions#tabline#enabled = 1
 " open new splits to right and bottom
 set splitbelow
 set splitright
+
+" remap pip8
+autocmd FileType python map <Leader>8 :call Flake8()<CR>
