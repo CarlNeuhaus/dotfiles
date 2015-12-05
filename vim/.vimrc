@@ -11,13 +11,17 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " jedi python autocomplete
-Plugin 'davidhalter/jedi-vim'
+" covered with py-mode now
+" Plugin 'davidhalter/jedi-vim'
 
 " supertab - tab autocompete
 Plugin 'ervandew/supertab'
 
 " nerdtree - file browser
-Plugin 'scrooloose/nerdtree'
+" Plugin 'scrooloose/nerdtree'
+
+" file browser with fuzzy matching
+Plugin 'ctrlpvim/ctrlp.vim'
 
 " airline - status/tabline
 Plugin 'bling/vim-airline'
@@ -29,7 +33,11 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'airblade/vim-gitgutter'
 
 " pep 8
-Plugin 'nvie/vim-flake8'
+" covered with py-mode now
+" Plugin 'nvie/vim-flake8'
+
+" add heaps of features for python
+Plugin 'klen/python-mode'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -345,6 +353,10 @@ nnoremap <C-H> <C-W><C-H>
 " remap to use system clipboard
 noremap Y "+y<CR>
 
+" select is not lost when indented
+vnoremap < <gv
+vnoremap > >gv
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -471,27 +483,6 @@ vmap <silent> <Leader>Y Y:call Session_yank()<CR>
 nmap <silent> <Leader>p :call Session_paste("p")<CR>
 nmap <silent> <Leader>P :call Session_paste("P")<CR>
 
-function Session_yank()
-  new
-  call setline(1,getregtype())
-  put
-  silent exec 'wq! ' . g:session_yank_file
-  exec 'bdelete ' . g:session_yank_file
-endfunction
-
-function Session_paste(command)
-  silent exec 'sview ' . g:session_yank_file
-  let l:opt=getline(1)
-  silent 2,$yank
-  if (l:opt == 'v')
-    call setreg('"', strpart(@",0,strlen(@")-1), l:opt) " strip trailing endline ?
-  else
-    call setreg('"', @", l:opt)
-  endif
-  exec 'bdelete ' . g:session_yank_file
-  exec 'normal ' . a:command
-endfunction
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -502,12 +493,12 @@ let g:SuperTabDefaultCompletionType = "context"
 " disable autocomplete on .
 let g:jedi#popup_on_dot = 0
 
-" remap nerdtree toggle
-map <C-n> :NERDTreeToggle<CR>
-" open nerdtree at startup
-autocmd VimEnter * NERDTree | wincmd l
-" close vim if it's only window left
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+ "remap nerdtree toggle
+"map <C-n> :NERDTreeToggle<CR>
+ "open nerdtree at startup
+"autocmd VimEnter * NERDTree | wincmd l
+ "close vim if it's only window left
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " airline - show buffers in tab line
 let g:airline#extensions#tabline#enabled = 1
@@ -518,3 +509,21 @@ set splitright
 
 " remap pip8
 autocmd FileType python map <Leader>8 :call Flake8()<CR>
+
+" change pymode color column color
+autocmd BufRead *.py setlocal colorcolumn=0
+
+" remap fold all for py-mode
+noremap <f> za
+
+" remove automatic line numbers and put everything else back
+let g:pymode_options = 0
+setlocal complete+=t
+setlocal formatoptions-=t
+"if v:version > 702 && !&relativenumber
+"    setlocal number
+"endif
+setlocal nowrap
+setlocal textwidth=79
+setlocal commentstring=#%s
+setlocal define=^\s*\\(def\\\\|class\\)
