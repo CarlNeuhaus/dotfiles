@@ -119,6 +119,9 @@ let g:mapleader = ","
 " Fast saving
 nmap <leader>w :w!<cr>
 
+" force sudo save
+cmap w!! %!sudo tee > /dev/null %
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -500,6 +503,8 @@ let g:jedi#popup_on_dot = 0
  "close vim if it's only window left
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
+" close autocomplete window and function definition window
+autocmd CompleteDone * pclose
 " airline - show buffers in tab line
 let g:airline#extensions#tabline#enabled = 1
 
@@ -514,7 +519,8 @@ autocmd FileType python map <Leader>8 :call Flake8()<CR>
 autocmd BufRead *.py setlocal colorcolumn=0
 
 " remap fold all for py-mode
-noremap <f> za
+noremap f za
+noremap F zi
 
 " remove automatic line numbers and put everything else back
 let g:pymode_options = 0
