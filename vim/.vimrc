@@ -36,9 +36,6 @@ Plugin 'airblade/vim-gitgutter'
 " covered with py-mode now
 " Plugin 'nvie/vim-flake8'
 
-" add heaps of features for python
-Plugin 'klen/python-mode'
-
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
